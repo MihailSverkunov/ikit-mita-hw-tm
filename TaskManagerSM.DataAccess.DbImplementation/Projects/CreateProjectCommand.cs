@@ -4,17 +4,17 @@ using TaskManagerSM.Db;
 using TaskManagerSM.Entities;
 using TaskManagerSM.ViewModel.Projects;
 using AutoMapper;
+using TaskManagerSM.DataAccess.UnitOfWork;
 
 namespace TaskManagerSM.DataAccess.DbImplementation.Projects
 {
     public class CreateProjectCommand : ICreateProjectCommand
     {
-        private TasksContext Context { get; }
-        public CreateProjectCommand(TasksContext context)
+        private IUnitOfWork Uow { get; }
+        public CreateProjectCommand(IUnitOfWork uow)
         {
-            Context = context;
+            Uow = uow;
         }
-
         public async Task<ProjectResponse> ExecuteAsync(CreateProjectRequest request)
         {
             //AutoMapper очень удобно
@@ -25,10 +25,10 @@ namespace TaskManagerSM.DataAccess.DbImplementation.Projects
                 .ForMember("OpenTasksCount", opt => opt.MapFrom(src => 0)));
             ProjectResponse projectResponse = Mapper.Map<ProjectResponse>(project);
 
-            await Context.Projects.AddAsync(project);
-            await Context.SaveChangesAsync();
+            Uow.Projects.Add(project);
+            await Uow.CommitAsync();
 
-            
+
 
             return projectResponse;
             //{

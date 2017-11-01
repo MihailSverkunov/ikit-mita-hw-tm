@@ -10,7 +10,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TaskManagerSM.DataAccess\TaskManagerSM.DataAccess.csproj" />
+    <ProjectReference Include="..\Task.Manager.DataAccess.UnitOfWork\TaskManagerSM.DataAccess.UnitOfWork.csproj" />
+    <ProjectReference Include="..\TaskManagerSM.DataAccess\TaskManagerSM.DataAccess.Interfaces.csproj" />
     <ProjectReference Include="..\TaskManagerSM.Db\TaskManagerSM.Db.csproj" />
     <ProjectReference Include="..\TaskManagerSM.ViewModel\TaskManagerSM.ViewModel.csproj" />
   </ItemGroup>

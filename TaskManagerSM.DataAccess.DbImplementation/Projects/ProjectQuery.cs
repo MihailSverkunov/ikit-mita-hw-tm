@@ -9,15 +9,16 @@ using TaskManagerSM.Db;
 using TaskManagerSM.Entities;
 using TaskManagerSM.ViewModel.Projects;
 using AutoMapper;
+using TaskManagerSM.DataAccess.UnitOfWork;
 
 namespace TaskManagerSM.DataAccess.DbImplementation.Projects
 {
     public class ProjectQuery : IProjectQuery
     {
-        private TasksContext Context { get; }
-        public ProjectQuery(TasksContext context)
+        private IUnitOfWork Uow { get; }
+        public ProjectQuery(IUnitOfWork uow)
         {
-            Context = context;
+            Uow = uow;
         }
 
         public async Task<ProjectResponse> RunAsync(int projectId)
@@ -25,7 +26,7 @@ namespace TaskManagerSM.DataAccess.DbImplementation.Projects
             Mapper.Initialize(cfg => cfg.CreateMap<Project, ProjectResponse>()
                                         .ForMember("OpenTasksCount", otc => otc.MapFrom(src => src.Tasks.Count(t => t.Status != Entities.TaskStatus.Completed))));
 
-            ProjectResponse response = await Context.Set<Project>()
+            ProjectResponse response = await Uow.Projects
                 .Select(p => Mapper.Map<ProjectResponse>(p))
                 //{
                 //    Id = p.Id,

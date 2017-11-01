@@ -12,6 +12,8 @@ using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.Swagger;
 using TaskManagerSM.DataAccess.DbImplementation.Projects;
 using TaskManagerSM.DataAccess.Projects;
+using TaskManagerSM.DataAccess.UnitOfWork;
+using TaskManagerSM.DataAccess.UnitOfWork.Implementation;
 
 namespace TaskManagerSM
 {
@@ -30,6 +32,8 @@ namespace TaskManagerSM
             services.AddDbContext<Db.TasksContext>(options => options.UseSqlServer(Configuration.GetConnectionString("TasksContext")));
             RegisterQueriesAndCommands(services);
 
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
             services.AddMvc();
 
             // Register the Swagger generator, defining one or more Swagger documents
@@ -40,9 +44,9 @@ namespace TaskManagerSM
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, Db.TasksContext context)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IUnitOfWork uow)
         {
-            context.Database.Migrate();
+            uow.Migrate();
 
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
