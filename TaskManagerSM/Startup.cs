@@ -69,9 +69,9 @@ namespace TaskManagerSM
 
         private void RegisterQueriesAndCommands(IServiceCollection services)
         {
-            services
-                .AddDbContext<Db.TasksContext>(options => options.UseSqlServer(Configuration.GetConnectionString("TasksContext")))
-                .RegisterUnitOfWork()
+            var connectionString = Configuration.GetConnectionString("TasksContext");
+            services               
+                .RegisterUnitOfWork(connectionString)
                 .RegisterUnitOfWorkQueriesAndCommands()
                 ;
             //registerunitofwork
