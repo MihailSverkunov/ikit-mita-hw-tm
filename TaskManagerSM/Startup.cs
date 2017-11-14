@@ -14,6 +14,7 @@ using TaskManagerSM.DataAccess.DbImplementation.Projects;
 using TaskManagerSM.DataAccess.Projects;
 using TaskManagerSM.DataAccess.UnitOfWork;
 using TaskManagerSM.DataAccess.UnitOfWork.Implementation;
+using TaskManagerSM.DataAccess.DbImplementation.Extentions;
 
 namespace TaskManagerSM
 {
@@ -29,10 +30,8 @@ namespace TaskManagerSM
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<Db.TasksContext>(options => options.UseSqlServer(Configuration.GetConnectionString("TasksContext")));
+            
             RegisterQueriesAndCommands(services);
-
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddMvc();
 
@@ -70,11 +69,13 @@ namespace TaskManagerSM
         private void RegisterQueriesAndCommands(IServiceCollection services)
         {
             services
-                .AddScoped<IProjectQuery, ProjectQuery>()
-                .AddScoped<IProjectsListQuery, ProjectsListQuery>()
-
-                .AddScoped<ICreateProjectCommand, CreateProjectCommand>()
+                .AddDbContext<Db.TasksContext>(options => options.UseSqlServer(Configuration.GetConnectionString("TasksContext")))
+                .AddScoped<IUnitOfWork, UnitOfWork>()
+                .RegisterUnitOfWorkQueriesAndCommands()
                 ;
+            //registerunitofwork
+            //registerdapper
+            //сделать internal классы
         }
     }
 }

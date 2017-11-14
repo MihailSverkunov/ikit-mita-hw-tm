@@ -8,7 +8,7 @@ using TaskManagerSM.DataAccess.UnitOfWork;
 
 namespace TaskManagerSM.DataAccess.DbImplementation.Projects
 {
-    public class CreateProjectCommand : ICreateProjectCommand
+    internal class CreateProjectCommand : ICreateProjectCommand
     {
         private IUnitOfWork Uow { get; }
         public CreateProjectCommand(IUnitOfWork uow)
