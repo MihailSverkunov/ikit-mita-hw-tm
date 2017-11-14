@@ -15,6 +15,7 @@ using TaskManagerSM.DataAccess.Projects;
 using TaskManagerSM.DataAccess.UnitOfWork;
 using TaskManagerSM.DataAccess.UnitOfWork.Implementation;
 using TaskManagerSM.DataAccess.DbImplementation.Extentions;
+using TaskManagerSM.DataAccess.UnitOfWork.Implementation.Extentions;
 
 namespace TaskManagerSM
 {
@@ -70,7 +71,7 @@ namespace TaskManagerSM
         {
             services
                 .AddDbContext<Db.TasksContext>(options => options.UseSqlServer(Configuration.GetConnectionString("TasksContext")))
-                .AddScoped<IUnitOfWork, UnitOfWork>()
+                .RegisterUnitOfWork()
                 .RegisterUnitOfWorkQueriesAndCommands()
                 ;
             //registerunitofwork
