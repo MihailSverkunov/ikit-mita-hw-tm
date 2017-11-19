@@ -12,10 +12,14 @@ using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.Swagger;
 using TaskManagerSM.DataAccess.DbImplementation.Projects;
 using TaskManagerSM.DataAccess.Projects;
-using TaskManagerSM.DataAccess.UnitOfWork;
-using TaskManagerSM.DataAccess.UnitOfWork.Implementation;
+
 using TaskManagerSM.DataAccess.DbImplementation.Extentions;
-using TaskManagerSM.DataAccess.UnitOfWork.Implementation.Extentions;
+
+using AutoMapper;
+using TaskManagerSM.ViewModel.Projects;
+using Microsoft.CodeAnalysis;
+using TaskManagerSM.AutoMapper;
+
 
 namespace TaskManagerSM
 {
@@ -23,6 +27,7 @@ namespace TaskManagerSM
     {
         public Startup(IConfiguration configuration)
         {
+            
             Configuration = configuration;
         }
 
@@ -34,7 +39,10 @@ namespace TaskManagerSM
             
             RegisterQueriesAndCommands(services);
 
+            
+
             services.AddMvc();
+
 
             // Register the Swagger generator, defining one or more Swagger documents
             services.AddSwaggerGen(c =>
@@ -44,9 +52,9 @@ namespace TaskManagerSM
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IUnitOfWork uow)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, Db.TasksContext context)
         {
-            uow.Migrate();
+            context.Database.Migrate();
 
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -69,14 +77,15 @@ namespace TaskManagerSM
 
         private void RegisterQueriesAndCommands(IServiceCollection services)
         {
-            var connectionString = Configuration.GetConnectionString("TasksContext");
-            services               
-                .RegisterUnitOfWork(connectionString)
-                .RegisterUnitOfWorkQueriesAndCommands()
+
+            services
+                .AddDbContext<Db.TasksContext>(options => options.UseSqlServer(Configuration.GetConnectionString("TasksContext")))
+                .RegisterQueriesAndCommands()
                 ;
-            //registerunitofwork
-            //registerdapper
-            //сделать internal классы
+
+            var config = new MapperConfiguration(cfg => {
+                cfg.AddProfile<OrganizationProfile>();
+            });
         }
     }
 }

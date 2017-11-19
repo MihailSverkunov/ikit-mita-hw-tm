@@ -9,35 +9,36 @@ using TaskManagerSM.Db;
 using TaskManagerSM.Entities;
 using TaskManagerSM.ViewModel.Projects;
 using AutoMapper;
-using TaskManagerSM.DataAccess.UnitOfWork;
+
 
 namespace TaskManagerSM.DataAccess.DbImplementation.Projects
 {
     public class ProjectQuery : IProjectQuery
     {
-        private IUnitOfWork Uow { get; }
-        public ProjectQuery(IUnitOfWork uow)
+        private TasksContext _context { get; }
+        public ProjectQuery(TasksContext context)
         {
-            Uow = uow;
+            _context = context;
         }
 
         public async Task<ProjectResponse> RunAsync(int projectId)
         {
-            Mapper.Initialize(cfg => cfg.CreateMap<Project, ProjectResponse>()
-                                        .ForMember("OpenTasksCount", otc => otc.MapFrom(src => src.Tasks.Count(t => t.Status != Entities.TaskStatus.Completed))));
+            //Mapper.Initialize(cfg => cfg.CreateMap<Project, ProjectResponse>()
+                                       // .ForMember("OpenTasksCount", otc => otc.MapFrom(src => src.Tasks.Count(t => t.Status != Entities.TaskStatus.Completed))));
 
-            ProjectResponse response = await Uow.Projects
+            ProjectResponse response = await _context.Projects
                 .Select(p => Mapper.Map<ProjectResponse>(p))
-                //{
-                //    Id = p.Id,
-                //    Name = p.Name,
-                //    Description = p.Description,
-                //    OpenTasksCount = p.Tasks.Count(t => t.Status != Entities.TaskStatus.Completed)
-                //}
-
                 .FirstOrDefaultAsync(pr => pr.Id == projectId);
+            //{
+            //    Id = p.Id,
+            //    Name = p.Name,
+            //    Description = p.Description,
+            //    OpenTasksCount = p.Tasks.Count(t => t.Status != Entities.TaskStatus.Completed)
+            //}
 
-            
+
+
+
 
             return response;
         }

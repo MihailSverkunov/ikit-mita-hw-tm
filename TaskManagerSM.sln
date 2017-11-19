@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2002
+VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskManagerSM", "TaskManagerSM\TaskManagerSM.csproj", "{74B5FD94-16BB-4146-A688-A6228C38A72A}"
 EndProject
@@ -11,13 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskManagerSM.ViewModel", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskManagerSM.Db", "TaskManagerSM.Db\TaskManagerSM.Db.csproj", "{665BD49D-0561-41BB-B98A-91768DD61A7A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskManagerSM.DataAccess.Interfaces", "TaskManagerSM.DataAccess\TaskManagerSM.DataAccess.Interfaces.csproj", "{9E67CE04-3F49-40B0-8168-7B8CE4C09AA5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskManagerSM.DataAccess", "TaskManagerSM.DataAccess\TaskManagerSM.DataAccess.csproj", "{9E67CE04-3F49-40B0-8168-7B8CE4C09AA5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskManagerSM.DataAccess.DbImplementation", "TaskManagerSM.DataAccess.DbImplementation\TaskManagerSM.DataAccess.DbImplementation.csproj", "{B40E374D-CE55-402E-B449-6E4CD111A22E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManagerSM.DataAccess.UnitOfWork", "Task.Manager.DataAccess.UnitOfWork\TaskManagerSM.DataAccess.UnitOfWork.csproj", "{90C0DA76-B61B-45D8-80C5-64214C8DA87B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskMnanagerSM.DataAccess.UnitOfWork.Implementation", "TaskMnanagerSM.DataAccess.UnitOfWork.Implementation\TaskMnanagerSM.DataAccess.UnitOfWork.Implementation.csproj", "{A9BCB1F4-F1FA-4831-8A9B-84FAAA9DD5DB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManagerSM.AutoMapper", "TaskManagerSM.AutoMapper\TaskManagerSM.AutoMapper.csproj", "{5EEF963E-D4C4-476A-8AFA-579D230C301B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,14 +47,10 @@ Global
 		{B40E374D-CE55-402E-B449-6E4CD111A22E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B40E374D-CE55-402E-B449-6E4CD111A22E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B40E374D-CE55-402E-B449-6E4CD111A22E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{90C0DA76-B61B-45D8-80C5-64214C8DA87B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{90C0DA76-B61B-45D8-80C5-64214C8DA87B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{90C0DA76-B61B-45D8-80C5-64214C8DA87B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{90C0DA76-B61B-45D8-80C5-64214C8DA87B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A9BCB1F4-F1FA-4831-8A9B-84FAAA9DD5DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A9BCB1F4-F1FA-4831-8A9B-84FAAA9DD5DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A9BCB1F4-F1FA-4831-8A9B-84FAAA9DD5DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A9BCB1F4-F1FA-4831-8A9B-84FAAA9DD5DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5EEF963E-D4C4-476A-8AFA-579D230C301B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5EEF963E-D4C4-476A-8AFA-579D230C301B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5EEF963E-D4C4-476A-8AFA-579D230C301B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5EEF963E-D4C4-476A-8AFA-579D230C301B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

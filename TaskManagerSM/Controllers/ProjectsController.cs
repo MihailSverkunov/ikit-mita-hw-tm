@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using TaskManagerSM.DataAccess.Projects;
 using TaskManagerSM.ViewModel;
 using TaskManagerSM.ViewModel.Projects;
+using TaskManagerSM.DataAccess.DbImplementation.Projects;
 
 namespace TaskManagerSM.Controllers
 {
@@ -27,8 +28,15 @@ namespace TaskManagerSM.Controllers
             {
                 return BadRequest(ModelState);
             }
-            ProjectResponse response = await command.ExecuteAsync(request);
-            return Ok(response); // This is wrong, it should return 401
+            try
+            {
+                ProjectResponse response = await command.ExecuteAsync(request);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet("{projectId}")]
@@ -46,17 +54,37 @@ namespace TaskManagerSM.Controllers
         [ProducesResponseType(200, Type = typeof(ProjectResponse))]
         [ProducesResponseType(404)]
         [ProducesResponseType(400)]
-        public Task<IActionResult> UpdateProjectAsync(int projectId, [FromBody]UpdateProjectRequest request)
+        public async Task<IActionResult> UpdateProjectAsync(int projectId, [FromBody]UpdateProjectRequest request, [FromServices]IUpdateProjectCommand command)
         {
-            throw new NotImplementedException();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            ProjectResponse response = await command.ExecuteAsync(projectId, request);
+            return response == null
+                ? (IActionResult)NotFound("Project Not Found")
+                : Ok(response);
         }
 
         [HttpDelete("{projectId}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public Task<IActionResult> DeleteProjectAsync(int projectId)
+        public async Task<IActionResult> DeleteProjectAsync(int projectId, [FromServices]IDeleteProjectCommand command)
         {
-            throw new NotImplementedException();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                await command.ExecuteAsync(projectId);
+                return Ok("Успешно");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

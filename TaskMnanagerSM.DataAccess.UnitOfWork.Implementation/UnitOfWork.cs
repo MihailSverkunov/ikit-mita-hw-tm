@@ -13,6 +13,8 @@ namespace TaskManagerSM.DataAccess.UnitOfWork.Implementation
         private readonly IQueryableRepository<Project> _projects;
         public IQueryableRepository<Project> Projects => _projects;
 
+
+
         public UnitOfWork(TasksContext context)
         {
             Context = context;

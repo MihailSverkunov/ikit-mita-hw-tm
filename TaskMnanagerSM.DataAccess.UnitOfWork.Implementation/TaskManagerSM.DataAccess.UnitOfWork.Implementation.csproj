@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Task.Manager.DataAccess.UnitOfWork\TaskManagerSM.DataAccess.UnitOfWork.csproj" />
     <ProjectReference Include="..\TaskManagerSM.Db\TaskManagerSM.Db.csproj" />
   </ItemGroup>
 

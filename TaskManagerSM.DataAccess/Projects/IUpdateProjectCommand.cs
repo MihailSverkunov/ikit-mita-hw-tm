@@ -5,6 +5,6 @@ namespace TaskManagerSM.DataAccess.Projects
 {
     public interface IUpdateProjectCommand
     {
-        Task<ProjectResponse> ExecuteAsunc(int projectId, UpdateProjectRequest request);
+        Task<ProjectResponse> ExecuteAsync(int projectId, UpdateProjectRequest request);
     }
 }

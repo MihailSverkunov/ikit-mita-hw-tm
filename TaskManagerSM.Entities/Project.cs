@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace TaskManagerSM.Entities
 {
@@ -13,5 +14,13 @@ namespace TaskManagerSM.Entities
         public string Description { get; set; }
 
         public ICollection<Task> Tasks { get; set; }
+
+        public int? OpenTasksCount
+        {
+            get
+            {
+                return Tasks?.Count(t => t.Status != TaskStatus.Completed) ?? 0;
+            }
+        }
     }
 }

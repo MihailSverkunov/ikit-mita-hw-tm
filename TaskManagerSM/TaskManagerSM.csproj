@@ -21,11 +21,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Task.Manager.DataAccess.UnitOfWork\TaskManagerSM.DataAccess.UnitOfWork.csproj" />
+    <ProjectReference Include="..\TaskManagerSM.AutoMapper\TaskManagerSM.AutoMapper.csproj" />
     <ProjectReference Include="..\TaskManagerSM.DataAccess.DbImplementation\TaskManagerSM.DataAccess.DbImplementation.csproj" />
-    <ProjectReference Include="..\TaskManagerSM.DataAccess\TaskManagerSM.DataAccess.Interfaces.csproj" />
+    <ProjectReference Include="..\TaskManagerSM.DataAccess\TaskManagerSM.DataAccess.csproj" />
     <ProjectReference Include="..\TaskManagerSM.ViewModel\TaskManagerSM.ViewModel.csproj" />
-    <ProjectReference Include="..\TaskMnanagerSM.DataAccess.UnitOfWork.Implementation\TaskMnanagerSM.DataAccess.UnitOfWork.Implementation.csproj" />
   </ItemGroup>
 
 </Project>
