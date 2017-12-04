@@ -8,7 +8,10 @@ namespace TaskManagerSM.Entities
     {
         public Task()
         {
+            //переделать
+            if (CreateDate == default(DateTime))
             _createDate = DateTime.Now;
+            
         }
 
         [Required]

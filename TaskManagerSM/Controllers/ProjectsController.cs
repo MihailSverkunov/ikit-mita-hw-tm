@@ -72,10 +72,6 @@ namespace TaskManagerSM.Controllers
         [ProducesResponseType(400)]
         public async Task<IActionResult> DeleteProjectAsync(int projectId, [FromServices]IDeleteProjectCommand command)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
             try
             {
                 await command.ExecuteAsync(projectId);

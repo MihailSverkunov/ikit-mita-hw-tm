@@ -22,20 +22,12 @@ namespace TaskManagerSM.DataAccess.DbImplementation.Tasks
         public async Task<TaskResponse> RunAsync(int taskId)
         {
 
-
-            TaskResponse response = await _context.Tasks
-                .Select(t => Mapper.Map<TaskResponse>(t))
+            var task = await _context.Tasks                
+                .Include(t => t.Tags).ThenInclude(tt => tt.Tag)
+                .Include(p => p.Project)
                 .FirstOrDefaultAsync(pr => pr.Id == taskId);
-            //{
-            //    Id = p.Id,
-            //    Name = p.Name,
-            //    Description = p.Description,
-            //    OpenTasksCount = p.Tasks.Count(t => t.Status != Entities.TaskStatus.Completed)
-            //}
 
-
-
-
+            var response = Mapper.Map<TaskResponse>(task);
 
             return response;
         }

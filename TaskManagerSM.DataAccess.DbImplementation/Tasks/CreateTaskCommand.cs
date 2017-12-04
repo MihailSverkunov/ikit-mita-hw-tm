@@ -32,21 +32,15 @@ namespace TaskManagerSM.DataAccess.DbImplementation.Tasks
             Entities.Task task = Mapper.Map<Entities.Task>(request);
            
             
-            foreach (var TagsInTask in task.Tags)
+            foreach (var tagsInTask in task.Tags)
             {                
-                var tag = await _context.Tags.FirstOrDefaultAsync(t => t.Name == TagsInTask.Tag.Name);
-                if (tag != null) TagsInTask.Tag = tag;
+                var tag = await _context.Tags.FirstOrDefaultAsync(t => t.Name == tagsInTask.Tag.Name);
+                if (tag != null) tagsInTask.Tag = tag;
             }
 
 
             await _context.Tasks.AddAsync(task);
             await _context.SaveChangesAsync();
-
-            //
-
-            task.Project = await _context.Projects
-                .Include(p => p.Tasks)
-                .FirstOrDefaultAsync(p => p.Id == task.ProjectId);
 
 
             TaskResponse response = Mapper.Map<TaskResponse>(task);

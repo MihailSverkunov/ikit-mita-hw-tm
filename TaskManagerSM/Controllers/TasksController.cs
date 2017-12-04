@@ -12,9 +12,10 @@ namespace TaskManagerSM.Controllers
     {
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(ListResponse<TaskResponse>))]
-        public async Task<IActionResult> GetTasksListAsync(TaskFilter filter, ListOptions options)
+        public async Task<IActionResult> GetTasksListAsync(TaskFilter filter, ListOptions options, [FromServices]ITasksListQuery query)
         {
-            throw new NotImplementedException();
+            var response = await query.RunAsync(filter, options);
+            return Ok(response);
         }
 
         [HttpPost]
@@ -36,6 +37,7 @@ namespace TaskManagerSM.Controllers
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
+
             }
         }
 
@@ -61,20 +63,72 @@ namespace TaskManagerSM.Controllers
         [HttpPut("{taskId}")]
         [ProducesResponseType(200, Type = typeof(TaskResponse))]
         [ProducesResponseType(404)]
-        public async Task<IActionResult> UpdateTaskAsync(int taskId, [FromBody]UpdateTaskRequest request)
+        public async Task<IActionResult> UpdateTaskAsync(int taskId, [FromBody]UpdateTaskRequest request, [FromServices]IUpdateTaskCommand command)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            throw new NotImplementedException();
+            try
+            {
+                TaskResponse response = await command.ExecuteAsync(request, taskId);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+
+            }
         }
 
         [HttpDelete("{taskId}")]
         [ProducesResponseType(204)]
-        public async Task<IActionResult> DeleteTaskAsync(int taskId)
+        public async Task<IActionResult> DeleteTaskAsync(int taskId, [FromServices]IDeleteTaskCommand command)
         {
-            throw new NotImplementedException();
+            try
+            {
+                await command.ExecuteAsync(taskId);
+                return Ok("Успешно");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        [HttpPut("{taskId}/tags/{tag}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> AddTagToTaskAsync(int taskId, string tag, [FromServices]IAddTagToTaskCommand command)
+        {
+            try
+            {
+                await command.ExecuteAsync(taskId, tag);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+
+            }
+        }
+
+        [HttpDelete("{taskId}/tags/{tag}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> DeleteTagFromTaskAsync(int taskId, string tag, [FromServices]IDeleteTagFromTaskCommand command)
+        {
+            try
+            {
+                await command.ExecuteAsync(taskId, tag);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+
+            }
         }
     }
 }

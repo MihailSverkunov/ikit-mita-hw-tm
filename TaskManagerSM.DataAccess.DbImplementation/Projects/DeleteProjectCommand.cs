@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -19,7 +20,7 @@ namespace TaskManagerSM.DataAccess.DbImplementation.Projects
 
         public async System.Threading.Tasks.Task ExecuteAsync(int projectId)
         {
-            Project project = await _context.Projects.FindAsync(projectId);
+            Project project = await _context.Projects.FirstOrDefaultAsync(p => p.Id == projectId);
             if (project != null)
             {
                 if (project.OpenTasksCount != 0) throw new CannotDeleteProjectWithTasksException();
