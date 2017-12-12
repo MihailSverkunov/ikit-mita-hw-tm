@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TaskManagerSM.DataAccess.Tasks;
 using TaskManagerSM.Db;
+using TaskManagerSM.ViewModel.Tasks;
 
 namespace TaskManagerSM.DataAccess.DbImplementation.Tasks
 {
@@ -17,7 +19,7 @@ namespace TaskManagerSM.DataAccess.DbImplementation.Tasks
             _context = context;
         }
 
-        public async Task ExecuteAsync(int taskId, string Tag)
+        public async Task<TaskResponse> ExecuteAsync(int taskId, string Tag)
         {
             var tit = await _context.TagsInTasks
                 .Where(t => t.TaskId == taskId)
@@ -40,7 +42,14 @@ namespace TaskManagerSM.DataAccess.DbImplementation.Tasks
                 await _context.SaveChangesAsync();
             }
 
-            return;
+            var task = await _context.Tasks
+               .Include(t => t.Tags).ThenInclude(tt => tt.Tag)
+               .Include(p => p.Project)
+               .FirstOrDefaultAsync(pr => pr.Id == taskId);
+
+            var response = Mapper.Map<TaskResponse>(task);
+
+            return response;
         }
     }
 }

@@ -9,8 +9,8 @@ namespace TaskManagerSM.Entities
         public Task()
         {
             //переделать
-            if (CreateDate == default(DateTime))
-            _createDate = DateTime.Now;
+            //if (CreateDate == default(DateTime))
+            //_createDate = DateTime.Now;
             
         }
 
@@ -29,6 +29,10 @@ namespace TaskManagerSM.Entities
         {
             get
             {
+                if (_createDate == default(DateTime))
+                {
+                    _createDate = DateTime.Now;
+                }
                 return _createDate;
             }
         }

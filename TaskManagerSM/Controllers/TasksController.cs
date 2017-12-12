@@ -104,8 +104,8 @@ namespace TaskManagerSM.Controllers
         {
             try
             {
-                await command.ExecuteAsync(taskId, tag);
-                return Ok();
+                var response = await command.ExecuteAsync(taskId, tag);
+                return Ok(response);
             }
             catch (Exception ex)
             {
@@ -121,8 +121,8 @@ namespace TaskManagerSM.Controllers
         {
             try
             {
-                await command.ExecuteAsync(taskId, tag);
-                return Ok();
+                var response = await command.ExecuteAsync(taskId, tag);
+                return Ok(response);
             }
             catch (Exception ex)
             {

@@ -1,10 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using TaskManagerSM.DataAccess.Tasks;
 using TaskManagerSM.Db;
+using TaskManagerSM.Entities;
+using TaskManagerSM.ViewModel.Tasks;
 
 namespace TaskManagerSM.DataAccess.DbImplementation.Tasks
 {
@@ -16,37 +19,48 @@ namespace TaskManagerSM.DataAccess.DbImplementation.Tasks
             _context = context;
         }
 
-        public async Task ExecuteAsync(int taskId, string Tag)
+        public async System.Threading.Tasks.Task<TaskResponse> ExecuteAsync(int taskId, string tagName)
         {
             var task = await _context.Tasks
                 .Include(t => t.Tags).ThenInclude(tt => tt.Tag)
-                //.Include(p => p.Project)
+                .Include(p => p.Project)
                 .FirstOrDefaultAsync(pr => pr.Id == taskId);
 
             if (task == null) throw new Exception("Нет такой задачи");
 
-            foreach (var tagInTask in task.Tags)
+            var tag =  await _context.Tags.FirstOrDefaultAsync(t => t.Name == tagName);
+            if (tag == null)
             {
-                if (tagInTask.Tag.Name == Tag)
-                    return;
+                tag = new Tag { Name = tagName };
+
+                task.Tags.Add(new Entities.TagsInTask
+                {
+                    Tag = tag,
+                    TagId = tag.Id,
+                    Task = task,
+                    TaskId = task.Id
+                });
             }
-
-            var tag = new Entities.Tag { Name = Tag };
-            task.Tags.Add(new Entities.TagsInTask
+            else
             {
-                Tag = tag,
-                TagId = tag.Id,
-                Task = task,
-                TaskId = task.Id
-            });
+                foreach (var tagInTask in task.Tags)
+                {
+                    if (tagInTask.Tag.Name == tagName)
+                        throw new Exception("Такой тэг уже есть в задаче");
+                }
 
-            if (await _context.Tags.FirstOrDefaultAsync(t => t.Name == Tag) == null)
-            {
-                await _context.Tags.AddAsync(tag);
+                task.Tags.Add(new Entities.TagsInTask
+                {
+                    Tag = tag,
+                    TagId = tag.Id,
+                    Task = task,
+                    TaskId = task.Id
+                });
             }
             await _context.SaveChangesAsync();
+            var response = Mapper.Map<TaskResponse>(task);
+            return response;
 
-            return;
         }
     }
 }
